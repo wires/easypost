@@ -1,0 +1,9 @@
+hosts = localhost
+user = easypost
+dbname = easypost
+password = ***
+
+# lookup uid based on email address
+query = SELECT U.uid
+	FROM mailbox_user U, mailbox_address A
+	WHERE A.user_id = U.id AND A.email='%s';

@@ -1,0 +1,7 @@
+hosts = localhost
+user = easypost
+dbname = easypost
+password = ***
+
+# just check if the domain is a destination
+query = SELECT name FROM mailbox_domain WHERE name='%s';

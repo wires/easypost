@@ -1,0 +1,97 @@
+#! /usr/bin/env python
+# Author: Jelle 'wires' Herold <jelle@defekt.nl>
+# Copyright: this code is place in the public domain.
+
+import sys
+from optparse import OptionParser
+
+from model import *
+
+class CLIException(Exception):
+	pass
+
+usage = """
+usage:
+  database setup:	ep setup
+  operations: 		ep OBJ CMD [options]		
+  option details:	ep --help
+ 
+  Where OBJ is user, address or domain and CMD is create,
+  remove or list. See 'ep --help' for details.
+"""
+
+def main():
+	
+	parser = OptionParser()
+	parser.add_option("--setup", action="store_true")
+	
+	parser.add_option("--create-user", nargs=2)
+	parser.add_option("--list-user", action="store_true")
+	parser.add_option("--remove-user")
+	parser.add_option("--generate-pass")
+	parser.add_option("--change-pass")
+	parser.add_option("--unix", action="store_true")
+	
+	parser.add_option("--create-address", nargs=2)
+	parser.add_option("--list-address", action="store_true")
+	parser.add_option("--remove-address")
+	
+	parser.add_option("--list-domain", action="store_true")
+		
+	parser.add_option("-U", "--user")
+	parser.add_option("-A", "--address")
+	parser.add_option("-D", "--domain")
+	
+	try:
+		options, args = parser.parse_args(args=sys.argv[1:])
+		e = Easypost()
+		
+		if options.generate_pass:
+			e.getUser(options.generate_pass).generatePassword()
+			return
+		
+		if options.change_pass:
+			e.getUser(options.change_pass).changePassword()
+			return
+	
+		if options.setup:
+			e.setup('postfix-cfg', 'dovecot-cfg')
+			return
+		
+		if options.create_user:
+			e.createUser(options.create_user[0], options.create_user[1], options.unix)
+			return
+		
+		if options.create_address:
+			e.createEmail(options.create_address[0], options.create_address[1])
+			return
+		
+		if options.remove_user:
+			e.removeUser(options.remove_user)
+			return
+			
+		if options.remove_address:
+			e.removeEmail(options.remove_address)
+			return
+		
+		if options.list_user:
+			e.listUsers(options.user, options.address)
+			return
+			
+		if options.list_address:
+			e.listEmail(options.user, options.domain)
+			return
+		
+		if options.list_domain:
+			e.listDomains(options.user)
+			return
+			
+
+	except CLIException, e:
+		print e
+	except EasypostException, e:
+		print e
+		
+if __name__ == "__main__":
+	main()
+    	
