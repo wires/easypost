@@ -18,6 +18,10 @@ This is intended for Debian/Ubuntu based systems. Minimum requirements:
 ``sudo aptitude install postfix-pgsql dovecot-imapd python-sqlobject postgresql apg``
 
 
+note:: python-sqlobject seems to depend on python2.4, which I'm not running.
+So, I suggest you install that using ``easy_install sqlobject``, which
+is in ``python-setuptools``. 
+
 Setup
 =====
 
