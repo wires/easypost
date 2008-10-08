@@ -21,18 +21,26 @@ This is intended for Debian/Ubuntu based systems. Minimum requirements:
 Setup
 =====
 
+We shall be needing a password for the database user, so we generate a 12
+character long password consisting of numeric, capital and lowercase characters.
+
+``apg -M NCL -n1 -m12 -x12``
+
+
 Postgresql
 ----------
 
 First, postgresql setup. We create a password protected user
 with limited capabilities, called ``easypost``. The password
 is encrypted using MD5 (see ``man createuser`` for details).
-Also, create a database called ``easypost`` for this user.::
+Also, we create a database called ``easypost`` for this user.::
 
   sudo -u postgres bash
   createuser -DRESP easypost
   createdb -O easypost easypost
   exit
+
+(you enter the password we generated earlier)
 
 We are running postfix and postgresql on the same system. So
 we first configure postgres to accept connections from user.
@@ -43,8 +51,10 @@ Add the following line to
  host  easypost easypost 127.0.0.1/32 md5
 
 (Make sure this is above the line that says ``local all all
-ident sameuser``. Also, the second line is nog needed if there
+ident sameuser``. Also, the second line is not needed if there
 is a line like ``host all all 127.0.0.1/32 md5``.)
+
+Now restart postgresql with ``/etc/init.d/postgresql-8.3 restart``.
 
 That's it. You can test this (as any user) with:::
 
