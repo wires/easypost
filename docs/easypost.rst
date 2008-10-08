@@ -12,10 +12,11 @@ This is intended for Debian/Ubuntu based systems. Minimum requirements:
  - Dovecot
  - Postfix
  - Postgresql
- - Python-sqlobject
+ - Python-sqlobject (which again depends on psycopg
+ - Python-configobj
  - APG automatic password generator
 
-``sudo aptitude install postfix-pgsql dovecot-imapd python-sqlobject postgresql apg``
+``sudo aptitude install postfix-pgsql dovecot-imapd python-sqlobject python-configobj python-psycopg2 postgresql apg``
 
 
 *Note*: python-sqlobject seems to depend on python2.4, which I'm not running.
